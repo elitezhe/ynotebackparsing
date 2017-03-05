@@ -23,7 +23,15 @@ def get_note_title_from_info(info_path):
         logging.debug(Argument)
 
     title_rindex = string.find(info_str, '.note')
-    note_title = info_str[0:title_rindex]
+    if title_rindex > 0:  # 部分微信保存笔记没有.note结尾
+        note_title = info_str[0:title_rindex]
+    else:
+        note_title = info_str[0:20]
+    # 避免笔记标题有链接,包含win下不能作为路径的符号
+    note_title = string.replace(note_title, ur'/', u'')
+    note_title = string.replace(note_title, ur'\\', u'')
+    note_title = string.replace(note_title, ur':', u'')
+
     return note_title
 
 
@@ -69,48 +77,14 @@ def get_res_info_from_resources(res_folder_path):
 if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
-    # path = r'C:\Users\Zhe Zhang\Desktop\yd\final\youdao_note_20170303\Notes\0E432AED88124A51973961CDA3ACDE1\Info'
-    # title = get_note_title_from_info(path)
-    #
-    # print title
-    # print type(title)
-    #
-    # cont_path1 = r'C:\Users\Zhe Zhang\Desktop\yd\final\youdao_note_20170303\Notes\0E432AED88124A51973961CDA3ACDE1\Content'
-    # content = get_note_content_from_content(cont_path1)
-    # print content
-    #
-    # res_path = r'C:\Users\Zhe Zhang\Desktop\yd\final\youdao_note_20170303\Notes\0E432AED88124A51973961CDA3ACDE1\Resources\66A38ADC69F64324ACCB6ED24C1DCCC'
-    # res_info = get_res_info_from_resources(res_path)
-    # print res_info
-    # print res_info
-    # print string.split(res_info, u' ')
-    # print res_info[2:3] in string.printable
-    # res_list = list(res_info)
-    # print res_list
-    # index = 0
-    # for c in res_list:
-    #     if c not in string.printable:
-    #         res_list[index] = u' '
-    #     index += 1
-    # print res_list
-    # print len(res_info), len(res_list)
-    # res_info = u''.join(res_list)
-    # print repr(res_info)
-    # res_list2 = string.split(res_info, u' ')
-    # print res_list2
-    # res_list3 = []
-    # for r in res_list2:
-    #     if r is None:
-    #         pass
-    #     else:
-    #         res_list3.append(r)
-    # print 'res3 is: ', res_list3
 
     # 2BEA622B6A3A4B62907BE83FF46794B CAC7EDDA72454468B8CD4697743E5F3 手写笔记 有问题,分割符+
     # 2C1B689D0EA74CAEBEAC84FE09D7A80 Resources 7B1597BFC05F4BD89113906CD0503CD
-    #
-    main_path = r'C:\Users\Zhe Zhang\Desktop\yd\final\youdao_note_20170303\Notes'
-    folder = ur'2C1B689D0EA74CAEBEAC84FE09D7A80'
+    # 569BAC97C5484626B2F951B1E51FC9B 标题有斜杠
+    main_path = ur'c:\\Users\Zhe Zhang\Desktop\yd\final\youdao_note_20170303\Notes'  # 注意\u前也要转义
+    main_path = os.path.normpath(main_path)  #
+
+    folder = ur'569BAC97C5484626B2F951B1E51FC9B'
     sub_folder = u'7B1597BFC05F4BD89113906CD0503CD'
 
     path = os.path.join(main_path, folder)
