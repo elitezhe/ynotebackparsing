@@ -49,11 +49,10 @@ if __name__ == '__main__':
                 attach_srieal = get_res_info_from_resources(attach_path)[0]  # 不要带Info结尾的路径 取第一个元素 得到类HASH的附件文件名
                 # 复制附件到新文件夹
                 new_attach_path = os.path.join(new_note_folder_path, attach_srieal)
-                pass
+                logging.info('attachment:' + attach_srieal)
                 shutil.copy(attachment_path, new_attach_path)
         else:
             logging.info('No attachments!')
-
 
         # break
 
