@@ -71,8 +71,14 @@ def get_res_info_from_resources(res_folder_path):
     res_path = os.path.join(res_folder_path, 'Content')
     with open(info_path, 'rb') as f:
         f.seek(4)
-        info_bytes = f.read()
+        info_hash_bytes = f.read(64)
+        f.seek(4)
+        info_bytes = f.read()  # seek4后的64个字节是类HASH串
+
     info_str = codecs.decode(info_bytes, 'utf-16', 'ignore')
+    info_hash_str = codecs.decode(info_hash_bytes, 'utf-16', 'ignore')
+    # logging.debug(info_hash_str)
+
     tmp_info_list = list(info_str)
     for idx, c in enumerate(tmp_info_list):
         if c not in string.printable:
@@ -80,12 +86,13 @@ def get_res_info_from_resources(res_folder_path):
     # Now we get pure utf info_str
     info_str = u''.join(tmp_info_list)
     info_str_splited = string.split(info_str, u'/')
-    info_list = []
+    info_list = [info_hash_str]
+
     for tmp in info_str_splited:
         tmp = string.strip(tmp)
         if not tmp == u'':
             info_list.append(tmp)
-    return info_list[0:2]  # 此处未做有效性检验
+    return info_list[0:3]  # 此处未做有效性检验
 
 
 if __name__ == '__main__':
@@ -98,7 +105,7 @@ if __name__ == '__main__':
     main_path = ur'c:\\Users\Zhe Zhang\Desktop\yd\final\youdao_note_20170303\Notes'  # 注意\u前也要转义
     main_path = os.path.normpath(main_path)  #
 
-    folder = ur'175833690C3D42BF92788BE495F86BF'
+    folder = ur'2C1B689D0EA74CAEBEAC84FE09D7A80'
     sub_folder = u'7B1597BFC05F4BD89113906CD0503CD'
 
     path = os.path.join(main_path, folder)
