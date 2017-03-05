@@ -5,6 +5,7 @@ import string
 import logging
 import sys
 import os
+import unicodedata
 
 
 def get_note_title_from_info(info_path):
@@ -28,9 +29,21 @@ def get_note_title_from_info(info_path):
     else:
         note_title = info_str[0:20]
     # 避免笔记标题有链接,包含win下不能作为路径的符号
+    # note_title = unicodedata.normalize('NFC' ,note_title)
     note_title = string.replace(note_title, ur'/', u'')
-    note_title = string.replace(note_title, ur'\\', u'')
+    note_title = string.replace(note_title, u'\\', u'')
     note_title = string.replace(note_title, ur':', u'')
+    note_title = string.replace(note_title, ur'|', u'')
+    note_title = string.replace(note_title, ur' ', u'')
+    note_title = string.replace(note_title, ur'\r', u'')
+    note_title = string.replace(note_title, ur'\n', u'')
+    note_title = string.replace(note_title, ur'\t', u'')
+    note_title = string.replace(note_title, ur'?', u'')
+    note_title = string.replace(note_title, b'\x00', u'')  # \x00在win路径中是非法的
+    note_title = string.replace(note_title, ur'"', u'')
+    note_title = string.replace(note_title, ur'<', u'')
+    note_title = string.replace(note_title, ur'>', u'')
+    note_title = string.replace(note_title, ur'.', u'')
 
     return note_title
 
@@ -69,6 +82,7 @@ def get_res_info_from_resources(res_folder_path):
     info_str_splited = string.split(info_str, u'/')
     info_list = []
     for tmp in info_str_splited:
+        tmp = string.strip(tmp)
         if not tmp == u'':
             info_list.append(tmp)
     return info_list[0:2]  # 此处未做有效性检验
@@ -84,7 +98,7 @@ if __name__ == '__main__':
     main_path = ur'c:\\Users\Zhe Zhang\Desktop\yd\final\youdao_note_20170303\Notes'  # 注意\u前也要转义
     main_path = os.path.normpath(main_path)  #
 
-    folder = ur'569BAC97C5484626B2F951B1E51FC9B'
+    folder = ur'175833690C3D42BF92788BE495F86BF'
     sub_folder = u'7B1597BFC05F4BD89113906CD0503CD'
 
     path = os.path.join(main_path, folder)
@@ -95,6 +109,7 @@ if __name__ == '__main__':
     sub_path = os.path.join(path2, sub_folder)
 
     print get_note_title_from_info(info_path)
+    print type(get_note_title_from_info(info_path))
     print get_note_content_from_content(content_path)
     print get_res_info_from_resources(sub_path)
 
