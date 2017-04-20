@@ -15,7 +15,7 @@
 ### How to use
 - 打开有道云笔记win端,选择 导出 –> 有道云笔记
 - 将后缀ynt的笔记备份文件解压缩,得到笔记备份文件夹(如解压失败,可参考[Issue](https://github.com/elitezhe/ynotebackparsing/issues/1))
-- 修改myconfig.py中的路径(注意,如果有路径中存在\U,最好加一个反斜杠改成\\U)
+- 修改myconfig.py中的路径(注意,如果有路径中存在\U,最好加一个反斜杠改成\\\U)
 - 确认本机已安装好对应版本的Python和相应的包,如不确定Anaconda是一个很好的选择
 - 运行rename_attachments.py
 
