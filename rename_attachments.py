@@ -13,7 +13,8 @@ if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
     assert os.path.exists(ynote_bak_path)
     work_path = os.path.join(ynote_bak_path, 'Notes')
-    save_path = os.path.join(ynote_bak_path, 'new')
+    # save_path = os.path.join(ynote_bak_path, 'new')
+    save_path = os.path.join(ynote_bak_path, 'new2')
     if not os.path.exists(save_path):
         os.mkdir(save_path)
     note_dirs = os.listdir(work_path)
@@ -28,7 +29,8 @@ if __name__ == '__main__':
         content_path = os.path.join(cur_path, 'Content')
         note_content = get_note_content_from_content(content_path)
 
-        new_note_folder_path = os.path.join(save_path, note_title)
+        # new_note_folder_path = os.path.join(save_path, note_title)
+        new_note_folder_path = save_path  # 所有笔记放在同一个文件夹中,不新建子目录了
         logging.debug(new_note_folder_path)
         if not os.path.exists(new_note_folder_path):
             os.mkdir(new_note_folder_path)
